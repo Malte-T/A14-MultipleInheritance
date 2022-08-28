@@ -1,0 +1,66 @@
+-- @path Mehrfachvererbung=/Mehrfachvererbung2Einfachvererbung/Mehrfachvererbung.ecore
+-- @path Einfachvererbung=/Mehrfachvererbung2Einfachvererbung/Einfachvererbung.ecore
+
+module Mehrfachvererbung2Einfachvererbung;
+
+create OUT: Einfachvererbung from IN: Mehrfachvererbung;
+
+rule Primitives {
+	from
+		primIn : Mehrfachvererbung!Primitive
+	to
+		primOut : Einfachvererbung!Primitive(
+			name <- primIn.name
+		)
+}
+rule Parameters {
+	from
+		paramIn : Mehrfachvererbung!Parameter
+	to
+		paramOut : Einfachvererbung!Parameter(
+			name <- paramIn.name,
+			type <- paramIn.type
+		)
+}
+
+rule Operations {
+	from
+		opIn : Mehrfachvererbung!Operation
+	to
+		opOut : Einfachvererbung!Operation(
+			formalParameters <- opIn.formalParameters,
+			return <- opIn.return
+		)
+}
+
+rule Classes {
+	from
+		c1 : Mehrfachvererbung!Class
+	to
+		c2 : Einfachvererbung!Class(
+			name <- c1.name,
+			operations <- c1.operations
+		)
+}
+
+rule Attributes {
+	from
+		attrIn : Mehrfachvererbung!Attribute
+	to
+		attrOut : Einfachvererbung!Attribute(
+			name <- attrIn.name,
+			ownerType <- attrIn.ownerType,
+			targetType <- attrIn.targetType
+		)
+}
+
+rule Associations {
+	from
+		ascIn : Mehrfachvererbung!Association
+	to
+		ascOut : Einfachvererbung!Association(
+			name <- ascIn.name,
+			ownerType <- ascIn.ownerType,
+			targetType <- ascIn.targetType
+		)
+}	
