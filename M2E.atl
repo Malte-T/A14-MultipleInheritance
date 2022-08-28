@@ -1,0 +1,31 @@
+-- @path Mehrfachvererbung=/M2E/Mehrfachvererbung.ecore
+-- @path Einfachvererbung=/M2E/Einfachvererbung.ecore
+
+module M2E;
+
+create OUT: Einfachvererbung refining IN: Mehrfachvererbung;
+
+rule handleMehrfachvererbung {
+	from
+		g : Mehrfachvererbung!Generalisation,
+		cOld : Mehrfachvererbung!Class(
+			cOld = g.specific
+			)
+	to
+		cNew : Einfachvererbung!Class(
+			name <- cOld.name,
+			-- Nur die Operationen der ursprünglichen Oberklasse werden übernommen.
+			-- Nicht die Operationen der ursprünglichen Unterklasse!
+			-- Lösung?
+			operations <- g.general.operations
+			),
+		p : Einfachvererbung!Primitive(
+			name <- g.general.name
+			),
+		a : Einfachvererbung!Attribute(
+			name <- g.general.name,
+			owner_Type <- cNew,
+			target_Type <- p
+			)
+}
+
