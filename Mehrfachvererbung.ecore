@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Mehrfachvererbung">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Mehrfachvererbung" nsURI="platform:/resource/Mehrfachvererbung2Einfachvererbung/Mehrfachvererbung.ecore"
+    nsPrefix="mehrfachvererbung">
   <eClassifiers xsi:type="ecore:EClass" name="BinaryRelationType" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="owner_Type" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownerType" lowerBound="1"
         eType="#//Class"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//BinaryRelationType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target_Type" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetType" lowerBound="1"
         eType="#//Primitive"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Association" eSuperTypes="#//BinaryRelationType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target_Type" lowerBound="1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetType" lowerBound="1"
         eType="#//Class"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Primitive" eSuperTypes="#//Type"/>
   <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="#//Type">
@@ -36,5 +36,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Parameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
