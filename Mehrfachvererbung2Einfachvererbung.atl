@@ -5,6 +5,35 @@ module Mehrfachvererbung2Einfachvererbung;
 
 create OUT: Einfachvererbung from IN: Mehrfachvererbung;
 
+helper context Mehrfachvererbung!Class def: hasInheritances(): Bag(Mehrfachvererbung!Generalisation) = 
+	Mehrfachvererbung!Generalisation.allInstances()->select(g | g.specific = self)->asBag();
+
+rule Operations {
+	from
+		opIn : Mehrfachvererbung!Operation
+	to
+		opOut : Einfachvererbung!Operation(
+			name <- opIn.name,
+			return <- opIn.return
+		)
+	do {
+		for(i in opIn.formalParameters) {	
+		opOut.formalParameters <- opOut.formalParameters.including(thisModule.formalParametersGenerator(i));
+		}
+	}
+}
+
+rule formalParametersGenerator(fpIn : Mehrfachvererbung!Parameter) {
+	to 
+		fpOut : Einfachvererbung!Parameter(
+			name <- fpIn.name,
+			type <- fpIn.type
+		)
+	do {
+		fpOut;
+	}
+}
+
 rule Primitives {
 	from
 		primIn : Mehrfachvererbung!Primitive
@@ -13,54 +42,58 @@ rule Primitives {
 			name <- primIn.name
 		)
 }
-rule Parameters {
+
+rule HandleSimpleClasses {
 	from
-		paramIn : Mehrfachvererbung!Parameter
+		cIn : Mehrfachvererbung!Class(
+			cIn.hasInheritances().size() <= 1
+		)
 	to
-		paramOut : Einfachvererbung!Parameter(
-			name <- paramIn.name,
-			type <- paramIn.type
+		cOut : Einfachvererbung!Class(
+			name <- cIn.name,
+			operations <- cIn.operations
 		)
 }
 
-rule Operations {
+rule HandleMehrfachvererbung {
 	from
-		opIn : Mehrfachvererbung!Operation
+		cIn : Mehrfachvererbung!Class(
+			cIn.hasInheritances().size() > 1
+		)
+	to
+		cOut : Einfachvererbung!Class(
+			name <- cIn.name
+		)
+	do {
+		for (g in cIn.hasInheritances()) {
+			thisModule.CreateAssociation(cOut, g);
+			for (op in g.general.operations) {
+				cOut.operations <- cOut.operations.including(thisModule.generateClassOperations(op));
+			}
+		}
+	}
+}
+
+rule generateClassOperations(opIn : Mehrfachvererbung!Operation) {
 	to
 		opOut : Einfachvererbung!Operation(
-			formalParameters <- opIn.formalParameters,
-			return <- opIn.return
+			return <- opIn.return,
+			name <- opIn.name
 		)
+	do {
+		for(i in opIn.formalParameters) {
+			opOut.formalParameters <- opOut.formalParameters.including(thisModule.formalParametersGenerator(i));	
+		}
+		opOut;
+	}
 }
 
-rule Classes {
-	from
-		c1 : Mehrfachvererbung!Class
+rule CreateAssociation(cOut : Einfachvererbung!Class, g : Mehrfachvererbung!Generalisation) {
 	to
-		c2 : Einfachvererbung!Class(
-			name <- c1.name,
-			operations <- c1.operations
+		asc : Einfachvererbung!Association(
+			name <- 'the' + g.general.name,
+			ownerType <- cOut,
+			targetType <- g.general
 		)
 }
-
-rule Attributes {
-	from
-		attrIn : Mehrfachvererbung!Attribute
-	to
-		attrOut : Einfachvererbung!Attribute(
-			name <- attrIn.name,
-			ownerType <- attrIn.ownerType,
-			targetType <- attrIn.targetType
-		)
-}
-
-rule Associations {
-	from
-		ascIn : Mehrfachvererbung!Association
-	to
-		ascOut : Einfachvererbung!Association(
-			name <- ascIn.name,
-			ownerType <- ascIn.ownerType,
-			targetType <- ascIn.targetType
-		)
-}	
+	

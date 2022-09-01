@@ -24,7 +24,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="general" lowerBound="1"
         eType="#//Class"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="specific" lowerBound="1"
-        eType="#//Class"/>
+        eType="#//Class" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
