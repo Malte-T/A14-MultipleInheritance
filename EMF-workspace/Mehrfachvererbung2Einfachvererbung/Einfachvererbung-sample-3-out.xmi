@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:mehrfachvererbung="platform:/resource/Mehrfachvererbung2Einfachvererbung/Mehrfachvererbung.ecore">
+  <mehrfachvererbung:Class name="D">
+    <operations return="/14" name="operationB">
+      <formalParameters type="/13" name="y"/>
+    </operations>
+    <operations return="/17" name="operationC">
+      <formalParameters type="/16" name="z"/>
+    </operations>
+    <operations return="/11" name="operationA">
+      <formalParameters type="/10" name="x"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="A">
+    <operations return="/11" name="operationA">
+      <formalParameters type="/10" name="x"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="B">
+    <operations return="/14" name="operationB">
+      <formalParameters type="/13" name="y"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="C">
+    <operations return="/17" name="operationC">
+      <formalParameters type="/16" name="z"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="E">
+    <operations return="/20" name="operationE">
+      <formalParameters type="/19" name="e"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Attribute ownerType="/1" name="attrA" targetType="/9"/>
+  <mehrfachvererbung:Attribute ownerType="/2" name="attrB" targetType="/12"/>
+  <mehrfachvererbung:Attribute ownerType="/3" name="attrC" targetType="/15"/>
+  <mehrfachvererbung:Attribute ownerType="/4" name="attrE" targetType="/18"/>
+  <mehrfachvererbung:Primitive name="T1"/>
+  <mehrfachvererbung:Primitive name="T2"/>
+  <mehrfachvererbung:Primitive name="T3"/>
+  <mehrfachvererbung:Primitive name="T4"/>
+  <mehrfachvererbung:Primitive name="T5"/>
+  <mehrfachvererbung:Primitive name="T6"/>
+  <mehrfachvererbung:Primitive name="T7"/>
+  <mehrfachvererbung:Primitive name="T8"/>
+  <mehrfachvererbung:Primitive name="T9"/>
+  <mehrfachvererbung:Primitive name="T10"/>
+  <mehrfachvererbung:Primitive name="T11"/>
+  <mehrfachvererbung:Primitive name="T12"/>
+  <mehrfachvererbung:Association ownerType="/0" name="theB" targetType="/2"/>
+  <mehrfachvererbung:Association ownerType="/0" name="theC" targetType="/3"/>
+  <mehrfachvererbung:Association ownerType="/0" name="theA" targetType="/1"/>
+</xmi:XMI>

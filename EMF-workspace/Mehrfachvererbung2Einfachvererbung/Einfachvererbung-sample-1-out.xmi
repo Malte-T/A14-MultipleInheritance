@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:mehrfachvererbung="platform:/resource/Mehrfachvererbung2Einfachvererbung/Mehrfachvererbung.ecore">
+  <mehrfachvererbung:Class name="C">
+    <operations return="/10" name="operationB">
+      <formalParameters type="/9" name="y"/>
+    </operations>
+    <operations return="/7" name="operationA">
+      <formalParameters type="/6" name="x"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="A">
+    <operations return="/7" name="operationA">
+      <formalParameters type="/6" name="x"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="B">
+    <operations return="/10" name="operationB">
+      <formalParameters type="/9" name="y"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Attribute ownerType="/1" name="attrA" targetType="/5"/>
+  <mehrfachvererbung:Attribute ownerType="/2" name="attrB" targetType="/8"/>
+  <mehrfachvererbung:Primitive name="T1"/>
+  <mehrfachvererbung:Primitive name="T2"/>
+  <mehrfachvererbung:Primitive name="T3"/>
+  <mehrfachvererbung:Primitive name="T4"/>
+  <mehrfachvererbung:Primitive name="T5"/>
+  <mehrfachvererbung:Primitive name="T6"/>
+  <mehrfachvererbung:Association ownerType="/0" name="theB" targetType="/2"/>
+  <mehrfachvererbung:Association ownerType="/0" name="theA" targetType="/1"/>
+</xmi:XMI>

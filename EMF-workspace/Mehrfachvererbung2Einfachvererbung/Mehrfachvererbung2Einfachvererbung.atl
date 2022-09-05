@@ -1,0 +1,150 @@
+-- @path Mehrfachvererbung=/Mehrfachvererbung2Einfachvererbung/Mehrfachvererbung.ecore
+-- @path Einfachvererbung=/Mehrfachvererbung2Einfachvererbung/Einfachvererbung.ecore
+
+module Mehrfachvererbung2Einfachvererbung;
+
+create OUT: Einfachvererbung from IN: Mehrfachvererbung;
+
+--Gibt alle Generalisierungen zurück, die das angesprochene Klassenelement als 'specific'-Objekt haben
+helper context Mehrfachvererbung!Class def: getMengeOberklassen(): Bag(Mehrfachvererbung!Generalisation) = 
+	Mehrfachvererbung!Generalisation.allInstances()->select(g | g.specific = self)->asBag();
+
+
+--Gibt 'true' zurück, wenn die angesprochene Generalisierung die einzige ist, die auf
+--ihr 'specific'-Objekt zeigt
+helper context Mehrfachvererbung!Generalisation def: hatKeineGeschwister(): Boolean =
+	if ((Mehrfachvererbung!Generalisation.allInstances()->select(g | g.specific = self.specific)->asBag().size()) >= 2) then
+		false
+	else
+		true
+	endif;
+
+
+-------------------------------------------------------------------
+--Abschnitt zur Behandlung von Mehrfachvererbung:
+--Wird nur aufgerufen, wenn mindestens zwei Generalisierungen auf dasselbe 'specific'-Objekt zeigen
+-------------------------------------------------------------------
+rule HandleMehrfachvererbung {
+	from
+		cIn : Mehrfachvererbung!Class(
+			cIn.getMengeOberklassen().size() > 1
+		)
+	to
+		cOut : Einfachvererbung!Class(
+			name <- cIn.name
+		)
+	do {
+		for (g in cIn.getMengeOberklassen()) {
+			--Erstelle für jede Oberklasse eine Assoziation
+			thisModule.createAssociation(cOut, g);
+			--Erstelle jede Operation der Oberklassen auch für die Unterklasse 'cOut'
+			for (op in g.general.operations) {
+				cOut.operations <- cOut.operations.including(thisModule.createClassOperations(op));
+			}
+		}
+	}
+}
+rule createAssociation(cOut : Einfachvererbung!Class, g : Mehrfachvererbung!Generalisation) {
+	to
+		asc : Einfachvererbung!Association(
+			name <- 'the' + g.general.name,
+			ownerType <- cOut,
+			targetType <- g.general
+		)
+}
+rule createClassOperations(opIn : Mehrfachvererbung!Operation) {
+	to
+		opOut : Einfachvererbung!Operation(
+			return <- opIn.return,
+			name <- opIn.name
+		)
+	do {
+		for(fp in opIn.formalParameters) {
+			opOut.formalParameters <- opOut.formalParameters.including(thisModule.createFormalParameters(fp));	
+		}
+		opOut;
+	}
+}
+rule createFormalParameters(fpIn : Mehrfachvererbung!Parameter) {
+	to 
+		fpOut : Einfachvererbung!Parameter(
+			name <- fpIn.name,
+			type <- fpIn.type
+		)
+	do {
+		fpOut;
+	}
+}
+----------------------------------------------------------------------------
+--Ende des Abschnitts zur Behandlung von Mehrfachvererbung
+----------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------
+--Überführung der restlichen Datenstruktur:
+----------------------------------------------------------------------------
+rule HandleSimpleClasses {
+	from
+		cIn : Mehrfachvererbung!Class(
+			cIn.getMengeOberklassen().size() < 2
+		)
+	to
+		cOut : Einfachvererbung!Class(
+			name <- cIn.name,
+			operations <- cIn.operations
+		)
+}
+rule HandleSimpleGeneralisations {
+	from
+		gIn : Mehrfachvererbung!Generalisation(
+			gIn.hatKeineGeschwister()
+		)
+	to
+		gOut : Einfachvererbung!Generalisation(
+			general <- gIn.general,
+			specific <- gIn.specific
+		)
+}
+rule Associations {
+	from
+		ascIn : Mehrfachvererbung!Association
+	to
+		ascOut : Einfachvererbung!Association(
+			name <- ascIn.name,
+			ownerType <- ascIn.ownerType,
+			targetType <- ascIn.targetType
+		)
+}
+rule Attributes {
+	from
+		attrIn : Mehrfachvererbung!Attribute
+	to
+		attrOut : Einfachvererbung!Attribute(
+			name <- attrIn.name,
+			ownerType <- attrIn.ownerType,
+			targetType <- attrIn.targetType
+		)
+}
+rule Operations {
+	from
+		opIn : Mehrfachvererbung!Operation
+	to
+		opOut : Einfachvererbung!Operation(
+			name <- opIn.name,
+			return <- opIn.return
+		)
+	do {
+		for(fp in opIn.formalParameters) {
+		--Ruft eine 'Called Rule' aus der Mehrfachvererbung auf zur Erstellung der 'formalParameters'
+		opOut.formalParameters <- opOut.formalParameters.including(thisModule.createFormalParameters(fp));
+		}
+	}
+}
+rule Primitives {
+	from
+		primIn : Mehrfachvererbung!Primitive
+	to
+		primOut : Einfachvererbung!Primitive(
+			name <- primIn.name
+		)
+}

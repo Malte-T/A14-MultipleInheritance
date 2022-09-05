@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:mehrfachvererbung="platform:/resource/Mehrfachvererbung2Einfachvererbung/Mehrfachvererbung.ecore">
+  <mehrfachvererbung:Class name="A">
+    <operations return="/9" name="operationA">
+      <formalParameters type="/8" name="x"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="B">
+    <operations return="/12" name="operationB">
+      <formalParameters type="/11" name="y"/>
+    </operations>
+  </mehrfachvererbung:Class>
+  <mehrfachvererbung:Class name="C"/>
+  <mehrfachvererbung:Generalisation general="/0" specific="/1"/>
+  <mehrfachvererbung:Generalisation general="/1" specific="/2"/>
+  <mehrfachvererbung:Attribute ownerType="/0" name="attrA" targetType="/7"/>
+  <mehrfachvererbung:Attribute ownerType="/1" name="attrB" targetType="/10"/>
+  <mehrfachvererbung:Primitive name="T1"/>
+  <mehrfachvererbung:Primitive name="T2"/>
+  <mehrfachvererbung:Primitive name="T3"/>
+  <mehrfachvererbung:Primitive name="T4"/>
+  <mehrfachvererbung:Primitive name="T5"/>
+  <mehrfachvererbung:Primitive name="T6"/>
+</xmi:XMI>
